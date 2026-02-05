@@ -139,6 +139,9 @@
             src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZTJreWIyeDcza2V1MW5vaHd5cWttOW1uYXRsamR6dTdxcm9jNml6eiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Zl7u48zLVFgLpRwq6f/giphy.gif"
         />
         <div>YAYYYYY</div>
+        <div>
+            Hope you have an amazing day today! See you soon and make sure your calendars empty 😗
+        </div>
         <img
             alt="pleaseeeeeee"
             src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExd28zcjJtZjVyazlleW9xdmI5a3EzN2M0a29lczNiZ2Y2cWhkdjhlaCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/YFIn0ICJFwGNa/giphy.gif"
