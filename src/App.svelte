@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { fade } from "svelte/transition";
+    import { blur, fade } from "svelte/transition";
 
     type MODE = "INPUT" | "FIRST_CONFIRMATION" | "SECOND_CONFIRMATION" | "QUESTION" | "ACCEPT";
     type KeyDownEvent = KeyboardEvent & {
@@ -46,7 +46,7 @@
 
     const login = (e: KeyDownEvent) => {
         if (e.key === "Enter") {
-            const inputIsMichelle = input.toLowerCase() === "michelle";
+            const inputIsMichelle = input.toLowerCase().trim().normalize() === "michelle";
             mode = inputIsMichelle ? "FIRST_CONFIRMATION" : "INPUT";
             shakeInput = !inputIsMichelle;
         }
@@ -100,7 +100,7 @@
                     >Yes</button
                 >
                 {#if shouldShow}
-                    <button class="no" onclick={() => (shouldShow = false)}>No</button>
+                    <button class="no" onclick={() => (shouldShow = false)} out:blur>No</button>
                 {/if}
             </div>
         </div>
