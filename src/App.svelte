@@ -22,13 +22,13 @@
     ] as const;
 
     let shakeInput = $state(false);
+    let shouldShow = $state(true);
     let input: string = $state("");
     let mode: MODE = $state("INPUT");
     let noButtonPos = $state({ x: 0, y: 0 });
     let noButtonClicked = $state(false);
     let textIndex: number = $state(0);
-    let padding1: number = $state(8);
-    let padding2: number = $state(8);
+    let padding: number = $state(8);
 
     const handleClick = () => {
         if (textIndex < noTexts.length - 1) {
@@ -83,9 +83,9 @@
                 <button
                     onclick={() => (mode = "SECOND_CONFIRMATION")}
                     class="yes"
-                    style={`padding: ${padding1}px`}>Yes</button
+                    style={`padding: ${padding}px`}>Yes</button
                 >
-                <button class="no" onclick={() => (padding1 += 8)}>No</button>
+                <button class="no" onclick={() => (padding += 8)}>No</button>
             </div>
         </div>
     {:else if mode === "SECOND_CONFIRMATION"}
@@ -96,12 +96,12 @@
             />
             <div>Are you really sure you're ready?</div>
             <div>
-                <button
-                    onclick={() => (mode = "QUESTION")}
-                    class="yes"
-                    style={`padding: ${padding2}px`}>Yes</button
+                <button onclick={() => (mode = "QUESTION")} class="yes" style="padding: 8px"
+                    >Yes</button
                 >
-                <button class="no" onclick={() => (padding2 += 8)}>No</button>
+                {#if shouldShow}
+                    <button class="no" onclick={() => (shouldShow = false)}>No</button>
+                {/if}
             </div>
         </div>
     {:else if mode === "QUESTION"}
