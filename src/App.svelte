@@ -6,12 +6,36 @@
         currentTarget: EventTarget & HTMLInputElement;
     };
 
+    const noTexts = [
+        "No",
+        "I know you didn't just click no",
+        "Surely that was a mistake?",
+        "Are you sure?",
+        "Wait think this through...",
+        "Wait really?",
+        "One more chance...",
+        "Okay but fr this is your last chance",
+        "I won't ask again",
+        "Okay thats just mean",
+        "Oh nah you don't have a choice :)",
+        "I can do this all day 😈",
+    ] as const;
+
     let shakeInput = $state(false);
     let input: string = $state("");
     let mode: MODE = $state("INPUT");
     let noButtonPos = $state({ x: 0, y: 0 });
     let noButtonClicked = $state(false);
+    let textIndex: number = $state(0);
+    let padding1: number = $state(8);
+    let padding2: number = $state(8);
 
+    const handleClick = () => {
+        if (textIndex < noTexts.length - 1) {
+            textIndex++;
+        }
+        moveNoButton();
+    };
     const moveNoButton = () => {
         noButtonClicked = true;
         noButtonPos = {
@@ -56,8 +80,12 @@
             />
             <div>Hi Babe, so I have a really important question. Are you ready?</div>
             <div>
-                <button onclick={() => (mode = "SECOND_CONFIRMATION")} class="yes">Yes</button>
-                <button class="no">No</button>
+                <button
+                    onclick={() => (mode = "SECOND_CONFIRMATION")}
+                    class="yes"
+                    style={`padding: ${padding1}px`}>Yes</button
+                >
+                <button class="no" onclick={() => (padding1 += 8)}>No</button>
             </div>
         </div>
     {:else if mode === "SECOND_CONFIRMATION"}
@@ -68,12 +96,16 @@
             />
             <div>Are you really sure you're ready?</div>
             <div>
-                <button onclick={() => (mode = "QUESTION")} class="yes">Yes</button>
-                <button class="no">No</button>
+                <button
+                    onclick={() => (mode = "QUESTION")}
+                    class="yes"
+                    style={`padding: ${padding2}px`}>Yes</button
+                >
+                <button class="no" onclick={() => (padding2 += 8)}>No</button>
             </div>
         </div>
     {:else if mode === "QUESTION"}
-        <div>
+        <div class="flex">
             <img
                 in:fade={{ delay: 415 }}
                 alt="pleaseeeeeee"
@@ -87,36 +119,47 @@
         </div>
         <div in:fade={{ delay: 415 }}>Okay, here goes...</div>
         <div in:fade={{ delay: 1200 }}>Will you be my valentine?</div>
-        <button in:fade={{ delay: 1700 }} onclick={() => (mode = "ACCEPT")} class="yes">Yes</button>
-        <button
-            in:fade={{ delay: 1700 }}
-            onclick={moveNoButton}
-            class="no"
-            class:runaway={noButtonClicked}
-            style={noButtonClicked ? `left: ${noButtonPos.x}px; top: ${noButtonPos.y}px;` : ""}
-            >No</button
-        >
+        <div in:fade={{ delay: 1700 }}>
+            <button onclick={() => (mode = "ACCEPT")} class="yes" style="padding: 8px;">Yes</button>
+            <button
+                onclick={handleClick}
+                class="no"
+                class:runaway={noButtonClicked}
+                style={noButtonClicked ? `left: ${noButtonPos.x}px; top: ${noButtonPos.y}px;` : ""}
+                >{noTexts[textIndex]}</button
+            >
+        </div>
     {:else if mode === "ACCEPT"}
+        <img
+            alt="pleaseeeeeee"
+            src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExd28zcjJtZjVyazlleW9xdmI5a3EzN2M0a29lczNiZ2Y2cWhkdjhlaCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/ukmZRuEqc2Rbi/giphy.gif"
+        />
+        <img
+            alt="pleaseeeeeee"
+            src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZTJreWIyeDcza2V1MW5vaHd5cWttOW1uYXRsamR6dTdxcm9jNml6eiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Zl7u48zLVFgLpRwq6f/giphy.gif"
+        />
         <div>YAYYYYY</div>
+        <img
+            alt="pleaseeeeeee"
+            src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExd28zcjJtZjVyazlleW9xdmI5a3EzN2M0a29lczNiZ2Y2cWhkdjhlaCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/YFIn0ICJFwGNa/giphy.gif"
+        />
+        <img
+            alt="pleaseeeeeee"
+            src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExd28zcjJtZjVyazlleW9xdmI5a3EzN2M0a29lczNiZ2Y2cWhkdjhlaCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/dvdcBNbAiNVT9Z0iwP/giphy.gif"
+        />
     {/if}
 </main>
 
 <style>
-    /*@keyframes shake {
-        0% {
-            margin-left: 0rem;
-        }
-        25% {
-            margin-left: 0.5rem;
-        }
-        75% {
-            margin-left: -0.5rem;
-        }
-        100% {
-            margin-left: 0rem;
-        }
-    }*/
+    @import url("https://fonts.googleapis.com/css2?family=Chewy&display=swap");
 
+    :global(body) {
+        background-color: rgb(256, 246, 229);
+        font-family: "Chewy", system-ui;
+        font-weight: 400;
+        font-style: normal;
+        font-size: 28px;
+    }
     @keyframes shake {
         10%,
         90% {
@@ -145,19 +188,42 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 20%;
+        max-height: 100vh;
+        padding: 1rem;
+        box-sizing: border-box;
+        text-align: center;
+    }
+
+    main > div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    div:has(> button) {
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
     }
 
     input {
         border-radius: 6px;
         width: 100%;
-        padding: 4px;
+        max-width: 300px;
+        padding: 8px;
+        box-sizing: border-box;
     }
 
     button {
         cursor: pointer;
         font-size: 24px;
-        box-shadow: 3px 6px 6px inherit;
+        box-shadow: -2px 2px 2px currentColor;
     }
 
     .yes {
@@ -165,8 +231,6 @@
         color: #14532d;
         border: none;
         border-radius: 4px;
-        padding: 8px;
-        box-shadow: 2.5px 5px 5px hsl(0deg 0% 0% / 0.42);
     }
 
     .no {
@@ -175,7 +239,6 @@
         border: none;
         border-radius: 4px;
         padding: 8px;
-        box-shadow: 2.5px 5px 5px hsl(0deg 0% 0% / 0.42);
     }
 
     .runaway {
@@ -183,7 +246,13 @@
     }
 
     .error {
-        /*animation: shake 0.2s ease-in-out 0s 2;*/
         animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    }
+
+    .flex {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
 </style>
